@@ -72,19 +72,16 @@
   <audio data-key="74" src="sounds/snare.wav"></audio>
   <audio data-key="75" src="sounds/tom.wav"></audio>
   <audio data-key="76" src="sounds/tink.wav"></audio>
-
 </body>
-
 
 <script>
   // attaching listeners to keys to play sounds on keypress
   window.addEventListener('keydown', playSound);
 
   // need to transition key back to original state
-  // use transitionend listener!! (for animation could listen to animation end)
+  // use transitionend listener!! (for animation could listen for animation end)
   const keys = document.querySelectorAll('.key');
   keys.forEach((key) => key.addEventListener('transitionend', removeTransition));
-  
   
   function playSound (e) {
     // e for event!
@@ -108,14 +105,10 @@
   function removeTransition(e) {
     // pick 1 of many css properties that transitionend'd in this case transform
     // if not transform property then return
-    if (e.propertyName !=='transform') return;
+    if (e.propertyName !== 'transform') return;
     
     // this refers to the key pressed - look at the function call context
     this.classList.remove('playing');
   }
-
 </script>
-
-
-
 </html>
