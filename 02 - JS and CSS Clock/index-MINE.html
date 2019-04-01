@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS30 Project #2 - JS + CSS Clock</title>
+</head>
+
+<body>
+  <div class="clock">
+    <div class="clock-face">
+      <div class="hand hr-hand"></div>
+      <div class="hand min-hand"></div>
+      <div class="hand sec-hand"></div>
+    </div>
+  </div>
+</body>
+
+<style>
+  html {
+    background: #018DED url(https://desolidstate.com/img/snowGather.gif);
+    background-size: cover;
+    font-family: 'helvetica neue';
+    text-align: center;
+    font-size: 10px;
+  }
+
+  body {
+    margin: 0;
+    font-size: 2rem;
+    display: flex;
+    flex: 1;
+    min-height: 100vh;
+    align-items: center;
+  }
+
+  .clock {
+    width: 30rem;
+    height: 30rem;
+    border: 20px solid darkblue;
+    border-radius: 50%;
+    margin: 50px auto;
+    position: relative;
+    padding: 2rem;
+    box-shadow:
+      0 0 0 4px rgba(0, 0, 0, 0.1),
+      inset 0 0 6px #EFEFEF,
+      inset 0 0 0 13px black,
+      0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .clock-face {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform: translateY(-3px); /* account for height of clock hands */
+  }
+
+  .hand {
+    width: 50%;
+    height: 6px;
+    background: black;
+    position: absolute;
+    top: 50%;
+    /*
+      the transform properties move the rotation to the right end of the
+      block element, rotate the hands to start at 12 o'clock, set the 
+      transition tie to 1/20th of a sec, & add a realistic snap to the
+      ticking of the hands.
+    */
+    transform-origin: 100%;
+    transform: rotate(90deg);
+    transition: all 0.05s;
+    transition-timing-function: cubic-bezier(0.35, 3.17, 0.81, 0.43);
+  }
+</style>
+
+<script>
+  const secHand = document.querySelector('.sec-hand');
+  const minHand = document.querySelector('.min-hand');
+  const hrHand = document.querySelector('.hr-hand');
+
+  function setDate() {
+    const now = new Date();
+    console.log(secHand.style);
+
+    const sec = now.getSeconds();
+    console.log(sec);
+    const secDeg = ((sec / 60) * 360) + 90;
+    secHand.style.transform = `rotate(${secDeg}deg)`;
+
+    const min = now.getMinutes();
+    const minDeg = ((min / 60) * 360) + 90;
+    minHand.style.transform = `rotate(${minDeg}deg)`;
+
+    const hr = now.getHours();
+    const hrDeg = ((hr / 12) * 360) + 90;
+    hrHand.style.transform = `rotate(${hrDeg}deg)`;
+
+    if (sec === 0) {
+      minHand.style.transition = 'all 0s';
+      secHand.style.transition = 'all 0s';
+      console.log('here');
+    }else{
+      secHand.style.transition = 'all 0.05s cubic-bezier(0.1, 2.7, 0.58, 1)';
+      minHand.style.transition = 'all 0.05s cubic-bezier(0.1, 2.7, 0.58, 1)';
+      hrHand.style.transition = 'all 0.05s cubic-bezier(0.1, 2.7, 0.58, 1)';
+    }
+  }
+
+  setInterval(setDate, 1000);
+
+</script>
+
+</html>
