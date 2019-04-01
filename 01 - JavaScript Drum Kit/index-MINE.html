@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>JS30 Project #1 - Drum Kit</title>
+  <link rel="stylesheet" href=my-style.css>
+</head>
+
+<body>
+  <!-- Keys that play drum sounds -->
+  <!-- 
+    TODO make a website that displays key codes
+    How 2 handle 2-key codes that use SHIFT, CNTRL, FN, OPT/ALT, CMND/APPLE?? 
+  -->
+  <div class="keys">
+    <div data-key="65" class="key">
+      <!-- data-key is a data-attribute! how you own your own key-->
+      <kbd>A</kbd>
+      <span class="sound">clap</span>
+    </div>
+
+    <div data-key="83" class="key">
+        <kbd>S</kbd>
+        <span class="sound">hihat</span>
+    </div>
+
+    <div data-key="68" class="key">
+        <kbd>D</kbd>
+        <span class="sound">kick</span>
+    </div>
+
+    <div data-key="70" class="key">
+        <kbd>F</kbd>
+        <span class="sound">openhat</span>
+    </div>
+
+    <div data-key="71" class="key">
+        <kbd>G</kbd>
+        <span class="sound">boom</span>
+    </div>
+
+    <div data-key="72" class="key">
+        <kbd>H</kbd>
+        <span class="sound">ride</span>
+    </div>
+
+    <div data-key="74" class="key">
+        <kbd>J</kbd>
+        <span class="sound">snare</span>
+    </div>
+
+    <div data-key="75" class="key">
+        <kbd>K</kbd>
+        <span class="sound">tom</span>
+    </div>
+
+    <div data-key="76" class="key">
+        <kbd>L</kbd>
+        <span class="sound">tink</span>
+    </div>
+  </div>
+
+  <!-- audio sounds that play when keys pressed -->
+  <!-- not making sounds programmatically, using .wav files -->
+  <audio data-key="65" src="sounds/clap.wav"></audio>
+  <audio data-key="83" src="sounds/hihat.wav"></audio>
+  <audio data-key="68" src="sounds/kick.wav"></audio>
+  <audio data-key="70" src="sounds/openhat.wav"></audio>
+  <audio data-key="71" src="sounds/boom.wav"></audio>
+  <audio data-key="72" src="sounds/ride.wav"></audio>
+  <audio data-key="74" src="sounds/snare.wav"></audio>
+  <audio data-key="75" src="sounds/tom.wav"></audio>
+  <audio data-key="76" src="sounds/tink.wav"></audio>
+
+</body>
+
+
+<script>
+  // attaching listeners to keys to play sounds on keypress
+  window.addEventListener('keydown', playSound);
+
+  // need to transition key back to original state
+  // use transitionend listener!! (for animation could listen to animation end)
+  const keys = document.querySelectorAll('.key');
+  keys.forEach((key) => key.addEventListener('transitionend', removeTransition));
+  
+  
+  function playSound (e) {
+    // e for event!
+    // use query selector to find the audio tags with data-key attributes
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    // use query selector again to find the div
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+    
+    // for keys without sounds attached to them
+    if (!audio) return;
+
+    // calling audio.play() when already playing does nothing
+    // so "rewind" when key pressed
+    audio.currentTime = 0;
+    audio.play();
+
+    // add class to animate box on screen on keypress
+    key.classList.add('playing');
+  }
+
+  function removeTransition(e) {
+    // pick 1 of many css properties that transitionend'd in this case transform
+    // if not transform property then return
+    if (e.propertyName !=='transform') return;
+    
+    // this refers to the key pressed - look at the function call context
+    this.classList.remove('playing');
+  }
+
+</script>
+
+
+
+</html>
